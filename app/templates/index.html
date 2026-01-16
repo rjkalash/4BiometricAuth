@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biometric Auth | Real-Time</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <nav class="navbar">
+            <div class="logo">
+                <span class="icon">⟡</span> BIO<span class="highlight">METRIC</span>
+            </div>
+            <div class="status-indicator">
+                <span class="dot"></span> LIVE MONITORING
+            </div>
+        </nav>
+
+        <main class="dashboard">
+            <div class="feed-section">
+                <div class="video-wrapper">
+                    <div class="scan-line"></div>
+                    <img src="{{ url_for('video_feed') }}" alt="Video Feed" class="live-feed">
+                    <div class="hud-corners">
+                        <svg class="corner tl" width="30" height="30" viewBox="0 0 30 30">
+                            <path d="M2,30 L2,2 L30,2" fill="none" class="stroke" />
+                        </svg>
+                        <svg class="corner tr" width="30" height="30" viewBox="0 0 30 30">
+                            <path d="M0,2 L28,2 L28,30" fill="none" class="stroke" />
+                        </svg>
+                        <svg class="corner bl" width="30" height="30" viewBox="0 0 30 30">
+                            <path d="M2,0 L2,28 L30,28" fill="none" class="stroke" />
+                        </svg>
+                        <svg class="corner br" width="30" height="30" viewBox="0 0 30 30">
+                            <path d="M0,28 L28,28 L28,0" fill="none" class="stroke" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="control-panel">
+                <div class="panel-header">
+                    <h3>System Status</h3>
+                </div>
+                <div class="metrics">
+                    <div class="metric-card">
+                        <span class="label">Confidence</span>
+                        <span class="value" id="accuracy-val">--%</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="label">Latency</span>
+                        <span class="value" id="latency-val">--ms</span>
+                    </div>
+                </div>
+                <div class="panel-header">
+                    <h3>Recent Detections</h3>
+                </div>
+                <div class="log-container">
+                    <div class="log-item">
+                        <span class="time">System</span>
+                        <span class="event">Monitoring Active</span>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+    <script>
+        function updateStats() {
+            fetch('/stats')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('latency-val').textContent = data.latency.toFixed(1) + 'ms';
+                    document.getElementById('accuracy-val').textContent = data.accuracy.toFixed(1) + '%';
+                })
+                .catch(err => console.error(err));
+        }
+        setInterval(updateStats, 1000);
+    </script>
+</body>
+
+</html>

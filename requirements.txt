@@ -1,0 +1,7 @@
+flask==3.0.0
+opencv-python==4.8.1.78
+scikit-learn
+scikit-image
+numpy
+joblib
+gunicorn==21.2.0

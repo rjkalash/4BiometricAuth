@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  biometric-auth:
+    build: .
+    container_name: biometric-auth
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+    # Uncomment the following lines to access local webcam on Linux
+    # devices:
+    #   - "/dev/video0:/dev/video0"
